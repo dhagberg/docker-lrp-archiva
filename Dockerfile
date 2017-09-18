@@ -2,8 +2,8 @@ FROM java:8-jre
 
 MAINTAINER D. J. Hagberg <dhagberg@millibits.com>
 
-ENV ARCHIVA_VERSION 2.2.1
-ENV ARCHIVA_SHA1 5a5f6cbda43cb185840e406e0675bc8029e29be9
+ENV ARCHIVA_VERSION 2.2.3
+ENV ARCHIVA_SHA1 1ada30e1fcacc88b07b0bf831fb3becd27b94d46
 ENV ARCHIVA_BASE /var/archiva
 
 RUN set -xe \
