@@ -1,22 +1,22 @@
-FROM java:8-jre
+FROM svn.co811.org:5000/co811-java
 
 MAINTAINER D. J. Hagberg <dhagberg@millibits.com>
 
-ENV ARCHIVA_VERSION 2.2.3
-ENV ARCHIVA_SHA1 1ada30e1fcacc88b07b0bf831fb3becd27b94d46
+ENV ARCHIVA_VERSION 2.2.5
+ENV ARCHIVA_SHA2 01119af2d9950eacbcce0b7f8db5067b166ad26c1e1701bef829105441bb6e29
 ENV ARCHIVA_BASE /var/archiva
 
 RUN set -xe \
   && wget -q -O /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz \
     http://apache.mirrors.pair.com/archiva/$ARCHIVA_VERSION/binaries/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz \
-  && sha1sum /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz \
+  && sha256sum /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz \
   && mkdir -p /opt \
-  && echo "$ARCHIVA_SHA1 /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz" | sha1sum -c - \
+  && echo "$ARCHIVA_SHA2 /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz" | sha256sum -c - \
   && tar -zxf /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz -C /opt/ \
   && rm /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz
 
-RUN addgroup --gid 799 archiva \
-  && adduser --gecos Archiva --gid 799 --uid 799 --disabled-password archiva
+RUN groupadd -g 799 archiva \
+  && useradd --comment Archiva -g 799 -u 799 archiva
 
 WORKDIR /opt/apache-archiva-$ARCHIVA_VERSION
 
