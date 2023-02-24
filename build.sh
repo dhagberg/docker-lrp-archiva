@@ -1,6 +1,6 @@
 #!/bin/bash
 set -xe
-PLAIN_NAME=co811-archiva
+PLAIN_NAME=lrp-archiva
 SVN_NAME=svn.co811.org:5000/$PLAIN_NAME
 
 docker build --pull -t $SVN_NAME .

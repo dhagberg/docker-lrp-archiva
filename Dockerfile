@@ -1,4 +1,4 @@
-FROM svn.co811.org:5000/co811-java
+FROM svn.co811.org:5000/lrp-java
 
 MAINTAINER D. J. Hagberg <dhagberg@millibits.com>
 
