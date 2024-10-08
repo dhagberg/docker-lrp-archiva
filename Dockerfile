@@ -1,19 +1,24 @@
-FROM svn.co811.org:5000/lrp-java
+FROM cga-ci:5000/lrp-u-base:latest
+# NOTE still start from lrp ubuntu base so we can install zulu8 rather than zulu21
 
 MAINTAINER D. J. Hagberg <dhagberg@millibits.com>
 
-ENV ARCHIVA_VERSION 2.2.9
-ENV ARCHIVA_SHA2 183f00be4b05564e01c9a4687b59d81828d9881c55289e0a2a9c1f903afb0c93
+ENV ARCHIVA_VERSION 2.2.10
+ENV ARCHIVA_SHA2 9d468f5cd3d7f6841e133e853fc24e73fb62397091f1bb3601b6f157a5eadf77
 ENV ARCHIVA_BASE /var/archiva
 
 RUN set -xe \
-  && wget -q -O /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz \
-    http://apache.mirrors.pair.com/archiva/$ARCHIVA_VERSION/binaries/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz \
-  && sha256sum /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz \
+  && export DEBIAN_FRONTEND=noninteractive \
+  && apt-get update \
+  && apt-get -y install zulu8-jre-headless fontconfig fonts-dejavu-core fonts-dejavu-mono wget \
+  && fname=apache-archiva-${ARCHIVA_VERSION}-bin.tar.gz \
+  && wget -q -O /tmp/$fname \
+    https://archive.apache.org/dist/archiva/${ARCHIVA_VERSION}/binaries/$fname \
+  && sha256sum /tmp/$fname \
   && mkdir -p /opt \
-  && echo "$ARCHIVA_SHA2 /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz" | sha256sum -c - \
-  && tar -zxf /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz -C /opt/ \
-  && rm /tmp/apache-archiva-$ARCHIVA_VERSION-bin.tar.gz
+  && echo "$ARCHIVA_SHA2 /tmp/$fname" | sha256sum -c - \
+  && tar -zxf /tmp/$fname -C /opt/ \
+  && rm /tmp/$fname
 
 RUN groupadd -g 799 archiva \
   && useradd --comment Archiva -g 799 -u 799 archiva

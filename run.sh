@@ -10,4 +10,4 @@ exec docker run -d --name archiva \
     -v /tank/archiva:/var/archiva:Z \
     -p 9999:9999 \
     --restart unless-stopped \
-    svn.co811.org:5000/lrp-archiva:latest
+    cga-ci:5000/lrp-archiva:latest
